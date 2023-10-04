@@ -129,7 +129,8 @@ class Guitarist extends Musician {
     this.#band = newBand
   }
   // метод joinBand, що змінює значення #band, this.#band = band
-  joinBand = () => {
+  joinBand(band) {
+    // була стрілкова функція
     this.#band = band
   }
   // перевизначений метод play(), що виводить рядок в консоль ${super.name} грає на ${super.instrument} в групі ${this.#band}
@@ -197,7 +198,7 @@ class Bassist extends Musician {
     this.#band = newBand
   }
   // метод joinBand, що змінює значення #band,this.#band = band
-  joinBand = () => {
+  joinBand = (band) => {
     this.#band = band
   }
   // перевизначений метод play(), що виводить рядок в консоль ${super.name} грає на ${super.instrument} в групі ${this.#band}
@@ -240,8 +241,8 @@ class Band {
 	 * #members - це масив об'єктів, що є екземплярами класу Musician або його нащадків
 	 */
   constructor(name, members) {
-    this.name = name
-    this.members = members
+    this.#name = name // забув #
+    this.#members = [...members] // було без дужок та забув #
   }
   // Створюємо getter для #name, що повертає приватну властивість #name
   get name() {
@@ -260,7 +261,7 @@ class Band {
     // Перевіряємо чи Musician є прототипом newMember
     if (newMember instanceof Musician) {
       // Ось тут ми використовуємо сетер band класу Musician
-      //   Musician.set(band)
+      newMember.band = this.#name // не розібрався з цим
       // До приватного поля #members яке є масивом додаємо мового музиканта
       this.#members.push(newMember)
     } else {
@@ -494,7 +495,7 @@ const bassist = new Bassist(
  * | members     | [bassist]       |
  */
 
-// const band = new Band('The Beatles', [bassist]) // TypeError: Cannot set property members of #<Band> which has only a getter (string 244)
+const band = new Band('The Beatles', [bassist]) // TypeError: Cannot set property members of #<Band> which has only a getter (string 244)
 
 // Додаємо guitarist до band за допомогою addMember
 
@@ -529,7 +530,7 @@ const songwriter = new SongWriter([
  * | date        | new Date('2023-08-01')               |
  */
 const performance = new Performance(
-  'band',
+  band,
   'Liverpool',
   new Date('2023-08-01'),
 )
@@ -546,7 +547,7 @@ Object.assign(LeadSinger.prototype, SongWriter)
  * | ticketPrice | 100              |
  */
 const concert = new Concert(
-  'band',
+  band,
   'BBC studios',
   new Date('1994-07-06'),
   100,
@@ -569,9 +570,9 @@ const leadsinger = new LeadSinger(
 musician.play()
 guitarist.play()
 bassist.play()
-// band.playMusic() // помилка
-performance.info() // часткова помилка
-concert.info() // часткова помилка
+band.playMusic() // була помилка
+performance.info() // була часткова помилка
+concert.info() // була часткова помилка
 vocalist.info()
 songwriter.info()
 leadsinger.info()
