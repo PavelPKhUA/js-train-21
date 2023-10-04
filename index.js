@@ -261,7 +261,7 @@ class Band {
     // Перевіряємо чи Musician є прототипом newMember
     if (newMember instanceof Musician) {
       // Ось тут ми використовуємо сетер band класу Musician
-      newMember.band = this.#name // не розібрався з цим
+      newMember.band = this.#name // не розібрався з цим          !!!!!!!!!!!!!!!!!!!!!!!!!
       // До приватного поля #members яке є масивом додаємо мового музиканта
       this.#members.push(newMember)
     } else {
